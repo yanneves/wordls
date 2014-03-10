@@ -1,0 +1,3 @@
+# yum install gcc
+# yum install gcc-c++
+gcc -o word word.cpp -lstdc++

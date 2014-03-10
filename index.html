@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Scrabble Word Generator | WordLS</title>
+	<meta name="description" content="Scrabble word generator and finder, useable as a crossword solver too!">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.css">
+
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body ng-app="wordls">
+
+	<!-- Jumbotron! -->
+	<header class="jumbotron">
+		<div class="container">
+			<h1>WordLS <small>Scrabble Word Generator</small></h1>
+			<p>Brought to you by Yann '<a href="http://aaunel.com/" tabindex="-1">Aaunel</a>' Eves-Hollis &amp; Keith Hollis</p>
+			<p><a href="mailto:wordls@aaunel.com" title="Contact" class="btn btn-primary btn-lg" tabindex="-1">Get in touch</a></p>
+		</div>
+	</header>
+
+	<!-- WordLS -->
+	<article class="container" ng-controller="wordController">
+		<!-- Search Form -->
+		<section class="row" ng-if="!res.state">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<form id="userInput" method="get" action="/cgi-bin/word.pl" role="form">
+					<div class="form-group">
+						<label for="inputRack">Rack Tiles</label>
+						<input type="text" id="inputRack" class="form-control" name="rack" required="required" ng-model="input.rack">
+					</div>
+					<div class="form-group">
+						<label for="inputPattern">Pattern</label>
+						<input type="text" id="inputPattern" class="form-control" placeholder="aeiou" ng-model="input.pattern">
+					</div>
+					<button type="submit" class="btn btn-primary" ng-click="search($event, input.rack, input.pattern)">Find Matching Words</button>
+					<button type="reset" class="btn" ng-click="reset()">Reset</button>
+				</form>
+			</div>
+		</section>
+		<!-- Results -->
+		<section class="row" ng-if="res.state">
+			<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+				<header class="row" style="margin-bottom:10px;">
+					<div class="col-xs-6">
+						<button type="button" class="btn" ng-click="back()"><i class="glyphicon glyphicon-chevron-left"></i> Back</button>
+					</div>
+					<div class="col-xs-6">
+						<p class="text-right" style="padding-top:6px"><strong>Found: {{found}}</strong></p>
+					</div>
+				</header>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="panel panel-default" ng-if="!res.words.length">
+							<div class="panel-body">
+								<p>No words found!</p>
+							</div>
+						</div>
+						<ul class="list-group" ng-if="res.words.length">
+							<li class="list-group-item" ng-repeat="play in res.words"><span class="badge">{{play.value}}</span> {{play.word}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+	</article>
+
+</body>
